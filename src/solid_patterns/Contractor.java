@@ -1,6 +1,8 @@
 package solid_patterns;
 
-class Contractor extends Person {
+import solid_patterns.Interfaces.IContractor;
+
+class Contractor extends Person implements IContractor{
 	  private String DateOfBirth;
 	  private String Contact;
 	  private String Company;

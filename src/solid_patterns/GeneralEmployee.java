@@ -1,5 +1,7 @@
 package solid_patterns;
 
+import solid_patterns.Interfaces.IGeneralEmployee;
+
 public class GeneralEmployee extends Person implements IGeneralEmployee {
 	  private String DateOfBirth;
 	  private String JobTitle;
