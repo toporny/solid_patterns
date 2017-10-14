@@ -1,15 +1,19 @@
 package solid_patterns;
 
-
+import java.util.ArrayList;
 
 public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-	    GeneralEmployee g = new GeneralEmployee();
-	    System.out.println("hello world");
-	    
-		System.out.println("werwer");
+	    //GeneralEmployee g = new GeneralEmployee();
+	    //System.out.println("hello world");
+
+		ArrayList<Person> people_list = new ArrayList<Person>();
+		//GeneralEmployee ge = new GeneralEmployee ("George", "Bush", "george_bush@usa.gov", "+123456789", "July 6, 1946", "president", 2300.12);
+		   
+		
+		System.out.println("end of program");
 	}
 
 }

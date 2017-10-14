@@ -6,6 +6,13 @@ public abstract class Person {
 	  private String EmailAddress = "";
 	  private String MobileNumber = "";
 	  
+	  public Person (String Firstname, String Lastname, String EmailAddress, String MobileNumber) {
+		  this.setFirstname(Firstname);
+		  this.setLastname(Lastname);
+		  this.setEmailAddress(EmailAddress);
+		  this.setMobileNumber(MobileNumber);
+	  }
+	  
 	  public void setFirstname(String Firstname) {
 	    this.Firstname = Firstname;
 	  }

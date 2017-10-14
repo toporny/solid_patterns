@@ -8,7 +8,7 @@ public interface IGeneralEmployee {
 	public void setJobTitle(String JobTitle);
 	public String getJobTitle();
 	  
-	public void setSalary(String Salary);
-	public String getSalary();
+	public void setSalary(double Salary);
+	public double getSalary();
   
 }
