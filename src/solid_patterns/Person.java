@@ -50,7 +50,11 @@ public abstract class Person {
 	  
 	  public String getMobileNumber() {
 	    return this.MobileNumber;
-	  }  
+	  }
+	  
+	  //	  public String getRole() { 
+	  //		  return this.getClass().getSimpleName();   // bad solution. Software localization is not possible in this case.
+	  //	  }  // I have moved getRole() to inherited class 
 	  
 	  abstract public Map<String, String> getAllDetails();
 

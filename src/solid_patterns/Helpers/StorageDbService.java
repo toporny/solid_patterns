@@ -3,8 +3,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Map;
 
+import solid_patterns.Person;
 import solid_patterns.Interfaces.IStorageServices;
 
 public class StorageDbService implements IStorageServices{
@@ -12,16 +14,29 @@ public class StorageDbService implements IStorageServices{
 	Connection c = null;
 	Statement stmt = null;
 	
-	public void save(Map<String, String> map) {
+	private static String sqliteFileName = "jdbc:sqlite:D16127504.sqlite";
+	
+	public void saveOne(Map<String, String> map) {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void saveMany(ArrayList<Person> people_list) {
+ 
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void close() {
+		// close connection
+	}
+	
 	
 	
 	public void openDbConn() {
 		try {		
 	    	Class.forName("org.sqlite.JDBC");
-	    	c = DriverManager.getConnection("jdbc:sqlite:students4.sqlite");
+	    	c = DriverManager.getConnection(sqliteFileName);
 	    	// System.out.println("Were connected ok!!");
 	    	
 	    } catch (Exception e) {

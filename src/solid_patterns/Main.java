@@ -1,15 +1,13 @@
 package solid_patterns;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Map;
 
 import solid_patterns.Helpers.StorageDbService;
-import solid_patterns.Helpers.Storage;
-import solid_patterns.Helpers.Storage;
 import solid_patterns.Helpers.StorageCsvService;
+import solid_patterns.Interfaces.IStorageServices;
 import solid_patterns.Interfaces.StorageDetails;
 
 public class Main {
@@ -22,7 +20,9 @@ public class Main {
 		// "It is suggested that you use an ArrayList to store the event attenders."
 		ArrayList<Person> people_list = new ArrayList<Person>();
 		
-		// "Hardcoded data. Each (object) has common methods (inherited from person) and some different methods"
+		// Few example records. This is Hardcoded data.
+		// Each (object) has common methods (inherited from person) and different specific methods only for specific role"
+		
 		GeneralEmployee gen1 = new GeneralEmployee ("George", "Bush", "george_bush@usa.gov", "+123456789", "1946-07-04", "president", "2300.12");
 		Contractor con1      = new Contractor      ("Urlich", "von Braun", "urlich_von_braun@v8.de", "+34235433", "1911-03-21", "Beverly Hils 90210",  "NASA");
 		Guest gue1           = new Guest           ("Mieszko", "Pierwszy", "mieszko1@gov.pl", "+48 505 323 111", "ul. Polan 1",  "Sclavinia");
@@ -30,29 +30,46 @@ public class Main {
 		Contractor con2      = new Contractor      ("Paul Joseph", "Goebbels", "joseph_goebbels@germany.gov", "+34 111 234", "1897-10-29", " Reich 1",  "Reichstag");
 		Guest gue2           = new Guest           ("Jan", "Kazimierz", "jan_kazimierz@gov.pl", "+342 35 433 11", "Kazimierz 1",  "Slavic inc.");
 
-		
 
-		//When a person is added to the system their details will be added/appended to a text file (csv).
-		StorageCsvService csv = new StorageCsvService();
+		IStorageServices csvServ = new StorageCsvService();
 		people_list.add(gen1);
+		// When a person is added to the system their details will be added/appended to a text file (csv).
+		csvServ.saveOne(((Person) people_list.get(0)).getAllDetails()); // this is example how to save only ONE record to storage
+		
 		people_list.add(con1);
 		people_list.add(gue1);
-		Storage.save(gen1.getAllDetails());
-		Storage.save(con1.getAllDetails());
-		Storage.save(gue1.getAllDetails());
-
-
-
-		//  At some point this will be changed upgraded to use a SQLite database.		
-		StorageDbService db = new StorageDbService();
 		people_list.add(gen2);
 		people_list.add(con2);
 		people_list.add(gue2);
-		Storage.save(gen2.getAllDetails());
-		Storage.save(con2.getAllDetails());
-		Storage.save(gue2.getAllDetails());
+
+		csvServ.saveMany(people_list); // example how to save whole list at the one time
+		csvServ.close();		
 		
+//		for (Object val : people_list) {
+//			
+//			Map<String, String> m = ((Person) val).getAllDetails(); 
+//			System.out.print(m.get("role")+" ");
+//			System.out.print(m.get("firstname")+" ");
+//			System.out.print(m.get("lastname")+" ");
+//			System.out.print(m.get("email_address")+" ");
+//			System.out.print(m.get("mobile_number")+" ");
+//			System.out.print(m.get("date_of_birth")+" ");
+//			System.out.print(m.get("job_title")+" ");
+//			System.out.print(m.get("salary")+" ");
+//			System.out.print(m.get("contact")+" ");
+//			System.out.print(m.get("company"));
+//			System.out.println();
+//		}
+				
+
+
+
+		// "At some point this will be changed upgraded to use a SQLite database."
+		IStorageServices dbServ = new StorageDbService();
 		
+//		Storage.save(dbServ, gen2.getAllDetails()); // this time I save data to DATABASE by service named: "dbServ" 
+//		Storage.save(dbServ, con2.getAllDetails()); // only one parameter: "csvServ" to  "dbServ" needs to be changed
+//		Storage.save(dbServ, gue2.getAllDetails()); // and everything else stayed as same as before. 
 		
 		
 		Connection c = null;
@@ -61,6 +78,7 @@ public class Main {
 		for (Object val : people_list) {
 			
 			Map<String, String> m = ((Person) val).getAllDetails(); 
+			System.out.print(m.get("role")+" ");
 			System.out.print(m.get("firstname")+" ");
 			System.out.print(m.get("lastname")+" ");
 			System.out.print(m.get("email_address")+" ");
@@ -97,7 +115,7 @@ public class Main {
 	    	// System.out.println("Were connected ok!!");
 	    	
 	    } catch (Exception e) {
-	    	System.err.println(e.getClass().getName() + ":"+e.getMessage());
+	    	System.err.println(e.getClass().getName() + ":"  +e.getMessage());
 	    	System.exit(0);
 	    }
 
@@ -279,3 +297,21 @@ Company
 //  - The application must be created using Eclipse or Netbeans and use a SQLite database..
 
 
+
+
+
+
+//ROLES AND PROPERITIES
+//-----------------------------------------------------------
+
+//general employee           contractor      guest
+//================           ==========      ======
+//firstname                  firstname       firstname
+//lastname                   lastname        lastname
+//email_address              email_address   email_address
+//mobile_number              mobile_number   mobile_number
+//date_of_birth              date_of_birth
+//job_title
+//salary
+//                          contact         contact
+//                          company         company

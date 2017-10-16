@@ -13,7 +13,7 @@ class Guest extends Person implements IGuest, StorageDetails {
 	private String Company;
 
 	private final String role = "Guest";
-	  
+
 	public Guest(String Firstname, String Lastname, String EmailAddress, String MobileNumber, String Contact, String Company) {
 		super(Firstname, Lastname, EmailAddress, MobileNumber);
 		this.setContact(Contact);
@@ -36,15 +36,18 @@ class Guest extends Person implements IGuest, StorageDetails {
 	public String getCompany() {
 		return this.Company;
 	}
+	
+	public String getRole() {
+		return this.role; // it is equal to: return this.getClass().getSimpleName();
+		//  and it could be even move to Person /parent class/!
+		// I have decided to made additional variable (private final String role = "GeneralEmployee";) in this class/case.
+		// to make Software localization possible in future
+	}  	
 
  
-	public String getRole() {
-		return this.role;
-	}
-
-	
 	final public Map<String, String> getAllDetails(){
 		Map<String, String> m = new HashMap<String, String>();
+		m.put("role",           this.getRole());
 		m.put("firstname",      this.getFirstname());
 		m.put("lastname",       this.getLastname());
 		m.put("email_address",  this.getEmailAddress());
@@ -54,28 +57,4 @@ class Guest extends Person implements IGuest, StorageDetails {
 		return m;
 	}    
 
-	
-
 }
-
-// https://www.youtube.com/watch?v=atz3-7myajm  .super.
-
-
-// general employee           contractor      guest
-
-// firstname                  firstname       firstname
-// lastname                   lastname        lastname
-// email_address              email_address   email_address
-// mobile_number              mobile_number   mobile_number
-
-
-// date_of_birth              date_of_birth
-// job_title
-// salary
-//	                          contact         contact
-//	                          company         company
-
-
-	//public interface Imessage {
-	//  public string getwrwer();
-	//}

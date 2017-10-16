@@ -51,12 +51,16 @@ class GeneralEmployee extends Person implements IGeneralEmployee, StorageDetails
   }
   
   public String getRole() {
-	return this.role;
+	return this.role; // it is equal to: return this.getClass().getSimpleName();
+	//  and it could be even move to Person /parent class/!
+	// I have decided to made additional variable (private final String role = "GeneralEmployee";) in this class/case.
+	// to make Software localization possible in future
   }
   
 
   final public Map<String, String> getAllDetails() {
 	Map<String, String> m = new HashMap<String, String>();
+	m.put("role",      		this.getRole());
 	m.put("firstname",      this.getFirstname());
 	m.put("lastname",       this.getLastname());
 	m.put("email_address",  this.getEmailAddress());
@@ -66,22 +70,4 @@ class GeneralEmployee extends Person implements IGeneralEmployee, StorageDetails
 	m.put("job_salary",     this.getSalary());
 	return m;
   }
-	
-	// general employee           contractor      guest
-
-	// firstname                  firstname       firstname
-	// lastname                   lastname        lastname
-	// email_address              email_address   email_address
-	// mobile_number              mobile_number   mobile_number
-
-
-	// date_of_birth              date_of_birth
-	// job_title
-	// salary
-//		                          contact         contact
-//		                          company         company
-	
-	
-
-  
 }
