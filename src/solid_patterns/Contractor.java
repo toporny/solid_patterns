@@ -53,7 +53,7 @@ class Contractor extends Person implements IContractor, StorageDetails {
   }  
 
 
-  public Map<String, String> getAllDetails() {
+  final public Map<String, String> getAllDetails() {
 	Map<String, String> m = new HashMap<String, String>();
 	m.put("firstname",      this.getFirstname());
 	m.put("lastname",       this.getLastname());

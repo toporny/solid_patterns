@@ -6,7 +6,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Map;
 
-import solid_patterns.Helpers.Db;
+import solid_patterns.Helpers.StorageDbService;
+import solid_patterns.Helpers.Storage;
+import solid_patterns.Helpers.Storage;
+import solid_patterns.Helpers.StorageCsvService;
 import solid_patterns.Interfaces.StorageDetails;
 
 public class Main {
@@ -19,19 +22,38 @@ public class Main {
 		// "It is suggested that you use an ArrayList to store the event attenders."
 		ArrayList<Person> people_list = new ArrayList<Person>();
 		
+		// "Hardcoded data. Each (object) has common methods (inherited from person) and some different methods"
 		GeneralEmployee gen1 = new GeneralEmployee ("George", "Bush", "george_bush@usa.gov", "+123456789", "1946-07-04", "president", "2300.12");
+		Contractor con1      = new Contractor      ("Urlich", "von Braun", "urlich_von_braun@v8.de", "+34235433", "1911-03-21", "Beverly Hils 90210",  "NASA");
+		Guest gue1           = new Guest           ("Mieszko", "Pierwszy", "mieszko1@gov.pl", "+48 505 323 111", "ul. Polan 1",  "Sclavinia");
 		GeneralEmployee gen2 = new GeneralEmployee ("Barbara", "Bush", "barbara_bush@usa.gov", "+234567890", "1948-07-04", "president", "1300.00");
-		Contractor con1 = new Contractor ("Urlich", "von Braun", "urlich_von_braun@v8.de", "+34235433", "1911-03-21", "Beverly Hils 90210",  "NASA");
-		Contractor con2 = new Contractor ("Paul Joseph", "Goebbels", "joseph_goebbels@germany.gov", "+34 111 234", "1897-10-29", " Reich 1",  "Reichstag");
-		Guest gue1 = new Guest ("Mieszko", "Pierwszy", "mieszko1@gov.pl", "+48 505 323 111", "ul. Polan 1",  "Sclavinia");
-		Guest gue2 = new Guest ("Jan", "Kazimierz", "jan_kazimierz@gov.pl", "+342 35 433 11", "Kazimierz 1",  "Slavic inc.");
+		Contractor con2      = new Contractor      ("Paul Joseph", "Goebbels", "joseph_goebbels@germany.gov", "+34 111 234", "1897-10-29", " Reich 1",  "Reichstag");
+		Guest gue2           = new Guest           ("Jan", "Kazimierz", "jan_kazimierz@gov.pl", "+342 35 433 11", "Kazimierz 1",  "Slavic inc.");
+
 		
+
+		//When a person is added to the system their details will be added/appended to a text file (csv).
+		StorageCsvService csv = new StorageCsvService();
 		people_list.add(gen1);
-		people_list.add(gen2);
 		people_list.add(con1);
-		people_list.add(con2);
 		people_list.add(gue1);
+		Storage.save(gen1.getAllDetails());
+		Storage.save(con1.getAllDetails());
+		Storage.save(gue1.getAllDetails());
+
+
+
+		//  At some point this will be changed upgraded to use a SQLite database.		
+		StorageDbService db = new StorageDbService();
+		people_list.add(gen2);
+		people_list.add(con2);
 		people_list.add(gue2);
+		Storage.save(gen2.getAllDetails());
+		Storage.save(con2.getAllDetails());
+		Storage.save(gue2.getAllDetails());
+		
+		
+		
 		
 		Connection c = null;
 		Statement stmt = null;

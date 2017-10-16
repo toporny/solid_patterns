@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-public class Csv {
+public class delideli_StorageCsv {
     public void saveData() 
     {
     	PrintWriter pw = null;

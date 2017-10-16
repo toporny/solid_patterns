@@ -55,17 +55,17 @@ class GeneralEmployee extends Person implements IGeneralEmployee, StorageDetails
   }
   
 
-	public Map<String, String> getAllDetails() {
-		Map<String, String> m = new HashMap<String, String>();
-		m.put("firstname",      this.getFirstname());
-		m.put("lastname",       this.getLastname());
-		m.put("email_address",  this.getEmailAddress());
-		m.put("mobile_number",  this.getMobileNumber());
-		m.put("date_of_birth",  this.getDateOfBirth());
-		m.put("job_title",      this.getJobTitle());
-		m.put("job_salary",     this.getSalary());
-		return m;
-	}
+  final public Map<String, String> getAllDetails() {
+	Map<String, String> m = new HashMap<String, String>();
+	m.put("firstname",      this.getFirstname());
+	m.put("lastname",       this.getLastname());
+	m.put("email_address",  this.getEmailAddress());
+	m.put("mobile_number",  this.getMobileNumber());
+	m.put("date_of_birth",  this.getDateOfBirth());
+	m.put("job_title",      this.getJobTitle());
+	m.put("job_salary",     this.getSalary());
+	return m;
+  }
 	
 	// general employee           contractor      guest
 
