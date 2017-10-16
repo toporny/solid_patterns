@@ -1,12 +1,18 @@
 package solid_patterns;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import solid_patterns.Interfaces.IContractor;
+import solid_patterns.Interfaces.StorageDetails;
 
 
-class Contractor extends Person implements IContractor {
+class Contractor extends Person implements IContractor, StorageDetails {
   private String DateOfBirth;
   private String Contact;
   private String Company;
+  
+  private final String role = "Contractor";
   
   public Contractor(String Firstname, String Lastname, String EmailAddress, String MobileNumber, String DateOfBirth, String Contact, String Company) {
 	super(Firstname, Lastname, EmailAddress, MobileNumber);
@@ -42,6 +48,39 @@ class Contractor extends Person implements IContractor {
     return this.Company;
   }
   
+  public String getRole() {
+	return this.role;
+  }  
+
+
+  public Map<String, String> getAllDetails() {
+	Map<String, String> m = new HashMap<String, String>();
+	m.put("firstname",      this.getFirstname());
+	m.put("lastname",       this.getLastname());
+	m.put("email_address",  this.getEmailAddress());
+	m.put("mobile_number",  this.getMobileNumber());
+	m.put("date_of_birth",  this.getDateOfBirth());
+	m.put("contact",       this.getContact());
+	m.put("company",       this.getCompany());	
+	return m;
+  }
+
+	// general employee           contractor      guest
+
+	// firstname                  firstname       firstname
+	// lastname                   lastname        lastname
+	// email_address              email_address   email_address
+	// mobile_number              mobile_number   mobile_number
+
+
+	// date_of_birth              date_of_birth
+	// job_title
+	// salary
+//		                          contact         contact
+//		                          company         company
+
+	
+
   
     
 }

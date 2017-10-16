@@ -1,6 +1,11 @@
 package solid_patterns;
 
-public abstract class Person {
+import java.util.Map;
+
+// absctract class  (Person)
+// and one abstract method (getAllDetails) that must be inherited
+
+public abstract class Person { 
 	  private String Firstname = "";
 	  private String Lastname = "";
 	  private String EmailAddress = "";
@@ -16,18 +21,20 @@ public abstract class Person {
 	  public void setFirstname(String Firstname) {
 	    this.Firstname = Firstname;
 	  }
-	  
-	  public String getLastname() {
+
+	  public String getFirstname() {
 	    return this.Firstname;
 	  }
 	  
+
 	  public void setLastname(String Lastname) {
 	    this.Lastname = Lastname;
 	  }
 	  
-	  public String getFirstname() {
+	  public String getLastname() {
 	    return this.Lastname;
 	  }
+
 	  
 	  public void setEmailAddress(String EmailAddress) {
 	    this.EmailAddress = EmailAddress;
@@ -45,5 +52,6 @@ public abstract class Person {
 	    return this.MobileNumber;
 	  }  
 	  
-	  // System.out.println(getTyp()+" "+getName()+" mówi "+getVoice());
+	  abstract public Map<String, String> getAllDetails();
+
 	}

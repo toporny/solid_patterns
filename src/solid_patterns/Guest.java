@@ -1,11 +1,18 @@
 package solid_patterns;
 
-import solid_patterns.Interfaces.IGuest;
 
-class Guest extends Person implements IGuest {
+import java.util.HashMap;
+import java.util.Map;
+
+import solid_patterns.Interfaces.IGuest;
+import solid_patterns.Interfaces.StorageDetails;
+
+class Guest extends Person implements IGuest, StorageDetails {
 
 	private String Contact;
 	private String Company;
+
+	private final String role = "Guest";
 	  
 	public Guest(String Firstname, String Lastname, String EmailAddress, String MobileNumber, String Contact, String Company) {
 		super(Firstname, Lastname, EmailAddress, MobileNumber);
@@ -30,24 +37,44 @@ class Guest extends Person implements IGuest {
 		return this.Company;
 	}
 
+ 
+	public String getRole() {
+		return this.role;
+	}
+
+	
+	public Map<String, String> getAllDetails(){
+		Map<String, String> m = new HashMap<String, String>();
+		m.put("firstname",      this.getFirstname());
+		m.put("lastname",       this.getLastname());
+		m.put("email_address",  this.getEmailAddress());
+		m.put("mobile_number",  this.getMobileNumber());		
+		m.put("contact",        this.getContact());
+		m.put("company",        this.getCompany());
+		return m;
+	}    
+
+	
+
 }
 
-	// https://www.youtube.com/watch?v=aTZ3-7myAJM  .super.
+// https://www.youtube.com/watch?v=atz3-7myajm  .super.
 
 
-	// General Employee           Contractor      Guest
+// general employee           contractor      guest
 
-	// Firstname                  Firstname       Firstname
-	// Lastname                   Lastname        Lastname
-	// Email address              Email address   Email address
-	// Mobile Number              Mobile Number   Mobile Number
+// firstname                  firstname       firstname
+// lastname                   lastname        lastname
+// email_address              email_address   email_address
+// mobile_number              mobile_number   mobile_number
 
 
-	// Date of Birth              Date of Birth
-	// Job Title
-	// Salary
-//	                            Contact         Contact
-//	                            Company         Company
+// date_of_birth              date_of_birth
+// job_title
+// salary
+//	                          contact         contact
+//	                          company         company
+
 
 	//public interface Imessage {
 	//  public string getwrwer();
