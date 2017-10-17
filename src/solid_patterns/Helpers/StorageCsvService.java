@@ -1,8 +1,13 @@
 package solid_patterns.Helpers;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,10 +15,10 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import solid_patterns.Contractor;
-import solid_patterns.GeneralEmployee;
-import solid_patterns.Guest;
-import solid_patterns.Person;
+import solid_d16127504.Contractor;
+import solid_d16127504.GeneralEmployee;
+import solid_d16127504.Guest;
+import solid_d16127504.Person;
 import solid_patterns.Interfaces.IStorageServices;
 
 public class StorageCsvService implements IStorageServices{
@@ -82,7 +87,7 @@ public class StorageCsvService implements IStorageServices{
 	            if (m.get(s) != null) {
 	            	sb.append(m.get(s));
 	            }
-	            sb.append("; ");
+	            sb.append(";");
 			}
 	        sb.append("\n");
 			pw.write(sb.toString());
@@ -101,62 +106,65 @@ public class StorageCsvService implements IStorageServices{
 	
 	
 	/*
-	 * Read all data from CSV file
+	 * CSV parser - Reads and parses all rows from CSV file
 	 */	
 	public ArrayList<Person> readAllData() {
 
 		ArrayList<Person> people_list = new ArrayList<Person>();
-//		String tableFields = String.join(", ", aTableColumns);
-//
-//		GeneralEmployee gen ;
-//		Contractor con ;
-//		Guest gue ;
-//
-//		try {
-//			ResultSet rs1 = stmt.executeQuery("SELECT " + tableFields + " FROM people");
-//			while (rs1.next()) {
-//				String role = rs1.getString("role");
-//				switch (role) {
-//				
-//				case "GeneralEmployee":
-//					gen  = new GeneralEmployee(rs1.getString("firstname"), rs1.getString("lastname"), rs1.getString("email_address"), rs1.getString("mobile_number"));
-//					gen.setDateOfBirth(rs1.getString("date_of_birth"));
-//					gen.setJobTitle(rs1.getString("job_title"));
-//					gen.setSalary(rs1.getString("salary"));
-//					people_list.add(gen);
-//					break;
-//
-//				case "Contractor":
-//					con  = new Contractor(rs1.getString("firstname"), rs1.getString("lastname"), rs1.getString("email_address"), rs1.getString("mobile_number"));
-//					con.setDateOfBirth(rs1.getString("date_of_birth"));
-//					con.setCompany(rs1.getString("company"));
-//					con.setContact(rs1.getString("contact"));
-//					people_list.add(con);
-//					break;
-//
-//				case "Guest":
-//					gue  = new Guest(rs1.getString("firstname"), rs1.getString("lastname"), rs1.getString("email_address"), rs1.getString("mobile_number"));
-//					gue.setCompany(rs1.getString("company"));
-//					gue.setContact(rs1.getString("contact"));
-//					people_list.add(gue);
-//					break;
-//
-//				default: // protection against unknown role from database
-//					throw new IllegalArgumentException("Unknown role: " + role);
-//
-//				}
-//			}
-//
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		GeneralEmployee gen;
+		Contractor con;
+		Guest gue;
+		
+		try (BufferedReader br = new BufferedReader(new FileReader(csvFileName))) {
+		    String line = br.readLine();
+		    line = br.readLine(); // ignore first line (with header) by just make another readLine()
+		    
+			// csvStructure = {"role", "firstname", "lastname", "email_address", "mobile_number", "date_of_birth", "job_title", "salary", "contact", "company"};
+		    while (line != null) {
+		        line = br.readLine();
+		        if (line != null) {
+		        	String a[] = line.split(";");
+		        	String role = a[0];
+
+		        	switch (role) {
+					case "GeneralEmployee":
+						gen = new GeneralEmployee(a[1],a[2],a[3],a[4]); // indexes are hardcoded
+						gen.setDateOfBirth(a[5]);
+						gen.setJobTitle(a[6]);
+						gen.setSalary(a[7]);
+						people_list.add(gen);
+						break;
+
+					case "Contractor":
+						con = new Contractor(a[1],a[2],a[3],a[4]);
+						con.setDateOfBirth(a[5]);
+						con.setCompany(a[8]);
+						con.setContact(a[9]);
+						people_list.add(con);
+						break;
+
+					case "Guest":
+						gue  = new Guest(a[1],a[2],a[3],a[4]);
+						gue.setCompany(a[8]);
+						gue.setContact(a[9]);
+						people_list.add(gue);
+						break;
+
+					default: // protection against unknown role from database
+						throw new IllegalArgumentException("Unknown role: " + role);
+
+		        	}
+		        }
+		        
+		    }
+		    
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		return people_list;
 	}
-
-	
-
- 
 
 }

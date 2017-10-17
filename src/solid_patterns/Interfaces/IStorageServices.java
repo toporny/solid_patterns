@@ -2,7 +2,7 @@ package solid_patterns.Interfaces;
 import java.util.ArrayList;
 import java.util.Map;
 
-import solid_patterns.Person;
+import solid_d16127504.Person;
 
 public interface IStorageServices {
 

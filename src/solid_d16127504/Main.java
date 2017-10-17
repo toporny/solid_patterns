@@ -1,4 +1,4 @@
-package solid_patterns;
+package solid_d16127504;
 import java.util.ArrayList;
 
 import solid_patterns.Helpers.StorageCsvService;
@@ -69,8 +69,8 @@ public class Main {
 		 */
 		people_list.clear(); // clear all old data to be sure all new data comes from storage.
 		people_list = csvServ.readAllData(); // read data frl DB
-		Helper.sendSmsToEverybody("+353 86 105 5566", people_list, "this is SMS to people from DB. Thank you for visiting!"); // +353 86 105 5566 = company phone 
-		Helper.sendEmailToEverybody("event@company.com", people_list,  "this is EMAIL to people from DB. Thank you for visiting!"); // event@company.com = company email
+		Helper.sendSmsToEverybody("+353 86 105 5566", people_list, "this is SMS to people from CSV file. Thank you for visiting!"); // +353 86 105 5566 = company phone 
+		Helper.sendEmailToEverybody("event@company.com", people_list,  "this is EMAIL to people from CSV file. Thank you for visiting!"); // event@company.com = company email
 	
 		
 		csvServ.close();

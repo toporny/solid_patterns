@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import solid_patterns.Contractor;
-import solid_patterns.GeneralEmployee;
-import solid_patterns.Guest;
-import solid_patterns.Person;
+import solid_d16127504.Contractor;
+import solid_d16127504.GeneralEmployee;
+import solid_d16127504.Guest;
+import solid_d16127504.Person;
 import solid_patterns.Interfaces.IStorageServices;
 
 public class StorageDbService implements IStorageServices{
@@ -145,10 +145,9 @@ public class StorageDbService implements IStorageServices{
 
 		String tableFields = String.join(", ", aTableColumns);
 		ArrayList<Person> people_list = new ArrayList<Person>();
-
-		GeneralEmployee gen ;
-		Contractor con ;
-		Guest gue ;
+		GeneralEmployee gen;
+		Contractor con;
+		Guest gue;
 
 		try {
 			ResultSet rs1 = stmt.executeQuery("SELECT " + tableFields + " FROM people");

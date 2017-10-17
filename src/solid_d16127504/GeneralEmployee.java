@@ -1,4 +1,4 @@
-package solid_patterns;
+package solid_d16127504;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -2,7 +2,7 @@ package solid_patterns.Helpers;
 
 import java.util.ArrayList;
 
-import solid_patterns.Person;
+import solid_d16127504.Person;
 import solid_patterns.Interfaces.IMsgProvider;
 
 public class Helper {
