@@ -2,114 +2,154 @@ package solid_patterns.Helpers;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Map;
-
+import java.util.logging.Logger;
 import solid_patterns.Person;
 import solid_patterns.Interfaces.IStorageServices;
 
 public class StorageDbService implements IStorageServices{
-	
+
+	private static String sqliteFileName = "jdbc:sqlite:D16127504.sqlite";
+	private String[] aTableColumns = {"role", "firstname", "lastname", "email_address", "mobile_number", "date_of_birth", "job_title", "salary", "contact", "company"};
+
+	private static Logger LOGGER = Logger.getLogger("InfoLogging");
+
 	Connection c = null;
 	Statement stmt = null;
-	
-	private static String sqliteFileName = "jdbc:sqlite:D16127504.sqlite";
-	
-	public void saveOne(Map<String, String> map) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	public void saveMany(ArrayList<Person> people_list) {
- 
-		// TODO Auto-generated method stub
-		
-	}
+	/* 
+	 * Storage DB Service contructor
+	 * checks if table exists
+	 * if not then create table
+	*/
+	public StorageDbService() {
 
-	public void close() {
-		// close connection
-	}
-	
-	
-	
-	public void openDbConn() {
+		// try to connect to SQLite
 		try {		
-	    	Class.forName("org.sqlite.JDBC");
-	    	c = DriverManager.getConnection(sqliteFileName);
-	    	// System.out.println("Were connected ok!!");
-	    	
-	    } catch (Exception e) {
-	    	System.err.println(e.getClass().getName() + ":"+e.getMessage());
-	    	System.exit(0);
-	    }
+			Class.forName("org.sqlite.JDBC");
+			c = DriverManager.getConnection(sqliteFileName);
+			// System.out.println("Were connected ok!!");
+			LOGGER.info("database "+sqliteFileName+" connected ok!!.");
+
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ":"+e.getMessage());
+			System.exit(0);
+		}
+
+		// check if table exists. If not then create table 
+		try {
+			stmt = c.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT count(*) as total FROM sqlite_master WHERE type='table' AND name='people'");
+			System.err.println(rs.getInt("total"));
+
+			// if there is no /PEOPLE/ table in databaase then create it.
+			if (rs.getInt("total") == 0) {
+
+				LOGGER.info("Seems table /people/ does not already exist. I need to create then.");
+
+				stmt = c.createStatement();
+				String createTable = "CREATE TABLE people "+
+						" (id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+						" role CHAR(16) NOT NULL, "+
+						" firstname CHAR(80) NOT NULL, "+
+						" lastname CHAR(80) NOT NULL, "+
+						" email_address CHAR(80) NOT NULL, "+
+						" mobile_number CHAR(80) NOT NULL, "+  // lets set CHAR because 'plus' on the beginning: "+353 861 055 543" 
+						" date_of_birth DATE, "+ 
+						" job_title CHAR(50), "+ 
+						" Salary CHAR(10), "+  // lets set CHAR because 'currency can be added' on the beginning: "1200$ or €"
+						" contact CHAR(50), "+
+						" company CHAR(50) "+
+						")";
+				stmt.executeUpdate(createTable);
+
+			} else {
+				LOGGER.info("Seems table /people/ already exist.");
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.err.println(e.getClass().getName() + ":"+e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
-	public void closeDbConn() {
+	
+	/* 
+	 * all column names are stored in /this.aTableColumns/ array
+	 * now I have to build /aTableValues/ with coresponding values
+	 * note:
+	 * "General_Employee" has "Date_of_Birth" but doesn't have "Contact" property
+	 * but "Contractor" has "Contact" but doesn't have "Date_of_Birth".. etc 
+	*/
 
+	private String[] PrepareValuesArray(Map<String, String> m){
+		String[] aTableValues = new String[aTableColumns.length];
+		for (int i=0; i<aTableColumns.length; i++) {
+			if (m.get(aTableColumns[i]) != null) {
+				aTableValues[i] = "'" + m.get(aTableColumns[i]) + "'";
+			}
+			else {
+				aTableValues[i] = "''"; // set empty string if field does not exist.
+			}
+		}		
+		return aTableValues;
+	}		
+
+
+	/*
+	 * save one record into database
+	 */
+	public void saveOneRecord(Map<String, String> m) {
+
+		// prepare array with values
+		String[] aTableValues = PrepareValuesArray(m);
+
+		// building query
+		String tableFields = String.join(", ", aTableColumns);
+		String tableValues = String.join(", ", aTableValues);
+		String finalQuery = "INSERT INTO people (" + tableFields + ") " + "VALUES (" + tableValues + ")";
+
+		try {
+			stmt.executeUpdate(finalQuery);
+		} catch (SQLException e) {
+			LOGGER.info("Problem with inserting one row to database");
+			LOGGER.info("final query:" + finalQuery);
+			LOGGER.info(e.getClass().getName() + ":" + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+	
+	/*
+	 * Save many record into database.
+	 * this is inefficient way because it calls saveOneRecord() many times
+	 * instead build one big insert query and make one dbExecute. 
+	 */
+	public void saveManyRecords(ArrayList<Person> people_list) {
+		for (Object val : people_list) {
+			Map<String, String> m = ((Person) val).getAllDetails();
+			this.saveOneRecord(m);
+		}
+	}
+
+	
+	/*
+	 * Close DB connection
+	 */
+	public void close() {
 		try {		
 			c.close();
-	    } catch (Exception e) {
-	    	System.err.println(e.getClass().getName() + ":"+e.getMessage());
-	    	System.exit(0);
-	    }		
-	}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("problem with closing database.");
+			System.err.println(e.getClass().getName() + ":"+e.getMessage());
+			e.printStackTrace();
+		}
 
- 	
-// https://www.tutorialspoint.com/sqlite/sqlite_java.htm
-	
-	public void connect2 () {
-		try {
-
-	    	stmt = c.createStatement();
-	    	String createTable = "CREATE TABLE Students4 "+
-	    			" (id INTEGER PRIMARY KEY AUTOINCREMENT, "+
-	    			" firstname CHAR(80) NOT NULL, "+
-	    			" lastname CHAR(80) NOT NULL, "+
-	    			" coursename CHAR(80) NOT NULL, "+
-	    			" age INT NOT NULL, "+
-	    			" address CHAR(50) "+
-	    		")";
-	    	stmt.executeUpdate(createTable);
-	    	
-	    	String insertStudent = "INSERT INTO Students4 (firstname, lastname, coursename, age, address) "
-	    	+ "VALUES ('Barry','Allen','Higher Diploma',21,'Dublin');";
-	    	
-	    	stmt.executeUpdate(insertStudent);
-	    	
-	    	String updateStudent = "UPDATE Students4 set age = 27 where ID = 1;";
-	    	stmt.executeUpdate(updateStudent);
-	    	    	    	
-	    	ResultSet rs = stmt.executeQuery("SELECT * FROM Students4");
-	    	
-	    	while (rs.next()) {
-	    		int id = rs.getInt("id");
-	    		String firstname = rs.getString("firstname");
-	    		String lastname = rs.getString("lastname");
-	    		String coursename = rs.getString("coursename");
-	    		int age = rs.getInt("age");
-	    		String address = rs.getString("address");
-	    		
-	    		System.out.println("rwer");
-	    		System.out.println("id: " + id);
-	    		System.out.println("firstname: " + firstname);
-	    		System.out.println("lastname: " + lastname);
-	    		System.out.println("coursename: " + coursename);
-	    		System.out.println("age: " + age);
-	    		System.out.println("address: " + address);
-	    		System.out.println();
-	    		
-	    		
-	    	}
-	
-	    	
-	    	c.close();
-	    	
-	    } catch (Exception e) {
-	    	System.err.println(e.getClass().getName() + ":"+e.getMessage());
-	    	System.exit(0);
-	    }
-    		
 	}
 
 

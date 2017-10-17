@@ -14,9 +14,7 @@ import solid_patterns.Interfaces.IStorageServices;
 public class StorageCsvService implements IStorageServices{
 
 	private static String csvFileName = "NewData.csv";
-	
 	private String[] csvStructure = {"role", "firstname", "lastname", "email_address", "mobile_number", "date_of_birth", "job_title", "salary", "contact", "company"};
-
 	private File file;
 	private PrintWriter pw = null;
 	
@@ -25,7 +23,7 @@ public class StorageCsvService implements IStorageServices{
 	public StorageCsvService() {
     	try {
     		file = new File(csvFileName);
-    	    pw = new PrintWriter(new FileOutputStream(new File(csvFileName), true));
+    	    pw = new PrintWriter(new FileOutputStream(file, true));
     	} catch (FileNotFoundException e) {
     	    e.printStackTrace();
     	}
@@ -35,7 +33,7 @@ public class StorageCsvService implements IStorageServices{
     	if (file.length() == 0) {
     		LOGGER.info("Seems file "+csvFileName+" did not exist. Header required.");
 
-    		// create header to add to CSV file:
+    		// create header and add to CSV file as a first line:
 			for (String s: csvStructure) {           
 	            sb.append(s);
 	            sb.append(';');
@@ -47,29 +45,67 @@ public class StorageCsvService implements IStorageServices{
     	else {
     		LOGGER.info("Seems file "+csvFileName+" exists. No need to add Header to the top of the file...");
     	}
+	}
+	
+	
+	public void saveOneRecord(Map<String, String> m) {
+        StringBuilder sb = new StringBuilder();
+		for (String s: csvStructure) {           
+            if (m.get(s) != null) {
+            	sb.append(m.get(s));
+            }
+            sb.append("; ");
+		}
+        sb.append("\n");
+		pw.write(sb.toString());
+	}
 
 	
-	}
-	
-	
-	public void saveOne(Map<String, String> map) {
-		// TODO Auto-generated method stub
-	}
+	public void saveManyRecords(ArrayList<Person> people_list) {
+		for (Object val : people_list) {
+			Map<String, String> m = ((Person) val).getAllDetails();
+	        StringBuilder sb = new StringBuilder();
+			for (String s: csvStructure) {           
+	            if (m.get(s) != null) {
+	            	sb.append(m.get(s));
+	            }
+	            sb.append("; ");
+			}
+	        sb.append("\n");
+			pw.write(sb.toString());
 
-	public void saveMany() {
-		// TODO Auto-generated method stub
+			// System.out.print(m.get("role")+" ");
+			// System.out.print(m.get("firstname")+" ");
+			// System.out.print(m.get("lastname")+" ");
+			// System.out.print(m.get("email_address")+" ");
+			// System.out.print(m.get("mobile_number")+" ");
+			// System.out.print(m.get("date_of_birth")+" ");
+			// System.out.print(m.get("job_title")+" ");
+			// System.out.print(m.get("salary")+" ");
+			// System.out.print(m.get("contact")+" ");
+			// System.out.print(m.get("company"));
+			// System.out.println();
+		}
 	}
+		
+//		Map<String, String> m = ((Person) val).getAllDetails(); 
+//		System.out.print(m.get("role")+" ");
+//		System.out.print(m.get("firstname")+" ");
+//		System.out.print(m.get("lastname")+" ");
+//		System.out.print(m.get("email_address")+" ");
+//		System.out.print(m.get("mobile_number")+" ");
+//		System.out.print(m.get("date_of_birth")+" ");
+//		System.out.print(m.get("job_title")+" ");
+//		System.out.print(m.get("salary")+" ");
+//		System.out.print(m.get("contact")+" ");
+//		System.out.print(m.get("company"));
+//		System.out.println();
+	//}
 
 	public void close() {
 		pw.close();
 	}
 
-
-	@Override
-	public void saveMany(ArrayList<Person> people_list) {
-		// TODO Auto-generated method stub
-		
-	}
-
+ 
 
 }

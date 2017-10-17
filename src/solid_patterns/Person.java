@@ -2,8 +2,8 @@ package solid_patterns;
 
 import java.util.Map;
 
-// absctract class  (Person)
-// and one abstract method (getAllDetails) that must be inherited
+// absctract class (Person)
+// one abstract method /Map/ must be inherited
 
 public abstract class Person { 
 	  private String Firstname = "";
@@ -51,11 +51,7 @@ public abstract class Person {
 	  public String getMobileNumber() {
 	    return this.MobileNumber;
 	  }
-	  
-	  //	  public String getRole() { 
-	  //		  return this.getClass().getSimpleName();   // bad solution. Software localization is not possible in this case.
-	  //	  }  // I have moved getRole() to inherited class 
-	  
+
 	  abstract public Map<String, String> getAllDetails();
 
 	}

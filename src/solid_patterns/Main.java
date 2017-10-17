@@ -1,11 +1,7 @@
 package solid_patterns;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Map;
-
 import solid_patterns.Helpers.StorageDbService;
+import solid_patterns.Helpers.Helper;
 import solid_patterns.Helpers.StorageCsvService;
 import solid_patterns.Interfaces.IStorageServices;
 import solid_patterns.Interfaces.StorageDetails;
@@ -21,154 +17,56 @@ public class Main {
 		ArrayList<Person> people_list = new ArrayList<Person>();
 		
 		// Few example records. This is Hardcoded data.
-		// Each (object) has common methods (inherited from person) and different specific methods only for specific role"
+		// Each (object) has common methods (inherited from person abstract ckass)
+		// and different specific methods only for specific role"
 		
 		GeneralEmployee gen1 = new GeneralEmployee ("George", "Bush", "george_bush@usa.gov", "+123456789", "1946-07-04", "president", "2300.12");
-		Contractor con1      = new Contractor      ("Urlich", "von Braun", "urlich_von_braun@v8.de", "+34235433", "1911-03-21", "Beverly Hils 90210",  "NASA");
-		Guest gue1           = new Guest           ("Mieszko", "Pierwszy", "mieszko1@gov.pl", "+48 505 323 111", "ul. Polan 1",  "Sclavinia");
-		GeneralEmployee gen2 = new GeneralEmployee ("Barbara", "Bush", "barbara_bush@usa.gov", "+234567890", "1948-07-04", "president", "1300.00");
-		Contractor con2      = new Contractor      ("Paul Joseph", "Goebbels", "joseph_goebbels@germany.gov", "+34 111 234", "1897-10-29", " Reich 1",  "Reichstag");
-		Guest gue2           = new Guest           ("Jan", "Kazimierz", "jan_kazimierz@gov.pl", "+342 35 433 11", "Kazimierz 1",  "Slavic inc.");
+		Contractor      con1 = new Contractor      ("Urlich", "von Braun", "urlich_von_braun@v8.de", "+34235433", "1911-03-21", "Beverly Hils 90210",  "NASA");
+		Guest           gue1 = new Guest           ("Mieszko", "Pierwszy", "mieszko1@gov.pl", "+48 505 323 111", "ul. Polan 1",  "Sclavinia");
+		GeneralEmployee gen2 = new GeneralEmployee ("Barbara", "Bush", "barbara_bush@usa.gov", "+234567890", "1948-07-04", "first lady", "1300.00");
+		Contractor      con2 = new Contractor      ("Paul Joseph", "Goebbels", "joseph_goebbels@germany.gov", "+34 111 234", "1897-10-29", " Reich 1",  "Reichstag");
+		Guest           gue2 = new Guest           ("Jan", "Kazimierz", "jan_kazimierz@gov.pl", "+342 35 433 11", "Kazimierz 1",  "Slavic inc.");
 
-
+		
+		// When a person is added to the system then details will be added/appended to a text file (csv).
 		IStorageServices csvServ = new StorageCsvService();
 		people_list.add(gen1);
-		// When a person is added to the system their details will be added/appended to a text file (csv).
-		csvServ.saveOne(((Person) people_list.get(0)).getAllDetails()); // this is example how to save only ONE record to storage
-		
+				
+		// example how to save only ONE record to storage
+		csvServ.saveOneRecord(((Person) people_list.get(0)).getAllDetails()); 
+
+		// let me add more records to the list...
 		people_list.add(con1);
 		people_list.add(gue1);
 		people_list.add(gen2);
 		people_list.add(con2);
 		people_list.add(gue2);
 
-		csvServ.saveMany(people_list); // example how to save whole list at the one time
-		csvServ.close();		
+		// example how to save save WHOLE list to the storage by one call
+		csvServ.saveManyRecords(Helper.skipFirstOne(people_list)); // skipped because first row was added before. 
+		csvServ.close();
+
 		
-//		for (Object val : people_list) {
-//			
-//			Map<String, String> m = ((Person) val).getAllDetails(); 
-//			System.out.print(m.get("role")+" ");
-//			System.out.print(m.get("firstname")+" ");
-//			System.out.print(m.get("lastname")+" ");
-//			System.out.print(m.get("email_address")+" ");
-//			System.out.print(m.get("mobile_number")+" ");
-//			System.out.print(m.get("date_of_birth")+" ");
-//			System.out.print(m.get("job_title")+" ");
-//			System.out.print(m.get("salary")+" ");
-//			System.out.print(m.get("contact")+" ");
-//			System.out.print(m.get("company"));
-//			System.out.println();
-//		}
-				
-
-
-
 		// "At some point this will be changed upgraded to use a SQLite database."
 		IStorageServices dbServ = new StorageDbService();
-		
-//		Storage.save(dbServ, gen2.getAllDetails()); // this time I save data to DATABASE by service named: "dbServ" 
-//		Storage.save(dbServ, con2.getAllDetails()); // only one parameter: "csvServ" to  "dbServ" needs to be changed
-//		Storage.save(dbServ, gue2.getAllDetails()); // and everything else stayed as same as before. 
-		
-		
-		Connection c = null;
-		Statement stmt = null;
-		
-		for (Object val : people_list) {
-			
-			Map<String, String> m = ((Person) val).getAllDetails(); 
-			System.out.print(m.get("role")+" ");
-			System.out.print(m.get("firstname")+" ");
-			System.out.print(m.get("lastname")+" ");
-			System.out.print(m.get("email_address")+" ");
-			System.out.print(m.get("mobile_number")+" ");
-			System.out.print(m.get("date_of_birth")+" ");
-			System.out.print(m.get("job_title")+" ");
-			System.out.print(m.get("salary")+" ");
-			System.out.print(m.get("contact")+" ");
-			System.out.print(m.get("company"));
-			System.out.println();
+		dbServ.saveOneRecord(((Person) people_list.get(0)).getAllDetails()); // this is example how to save only ONE record to db
+		dbServ.saveManyRecords(Helper.skipFirstOne(people_list)); // example how to save WHOLE list by one call
+		dbServ.close();
+		// What I did above I changed "csvServ" to "dbServ"
+		// and everything else is the same like with CSV was (D.I.P. Dependency Inversion Principle)
 
+		System.exit(0);		
 
-			
-      
+		
+		
+//		for (Object val : people_list) {
 //			System.out.println(((StorageDetails) val).getRole());
 //			System.out.println(((Person) val).getFirstname());
-		}
-		
-		
+//			System.out.println(((Person) val).getLastname());
+//			System.out.println(((Person) val).getEmailAddress());
+//			System.out.println(((Person) val).getMobileNumber());
+//		}
 //		
-//        for (String a : args) {
-//            Integer freq = m.get(a);
-//            m.put(a, (freq == null) ? 1 : freq + 1);
-//        }
-
-        //System.out.println(m.size() + " distinct words:");
-        //System.out.println(m);
-        
-        System.exit(0); 
-        
-		try {		
-	    	Class.forName("org.sqlite.JDBC");
-	    	c = DriverManager.getConnection("jdbc:sqlite:students4.sqlite");
-	    	// System.out.println("Were connected ok!!");
-	    	
-	    } catch (Exception e) {
-	    	System.err.println(e.getClass().getName() + ":"  +e.getMessage());
-	    	System.exit(0);
-	    }
-
-		
-		try {
-
-	    	stmt = c.createStatement();
-	    	String createTable = "CREATE TABLE people "+
-	    			" (id INTEGER PRIMARY KEY AUTOINCREMENT, "+
-	    			" firstname CHAR(80) NOT NULL, "+
-	    			" lastname CHAR(80) NOT NULL, "+
-	    			" email_address CHAR(80) NOT NULL, "+
-	    			" mobile_number CHAR(80) NOT NULL, "+  // let set STRING because 'plus' on the beginning: "+353 861 055 543" 
-	    			" date_of_birth DATE, "+ 
-	    			" job_title CHAR(50), "+ 
-	    			" Salary REAL, "+
-	    			" contact CHAR(50), "+
-	    			" company CHAR(50) "+
-	    			" role CHAR(16), "+ 
-	    		")";
-	    	
-	    	
-	    	//System.out.println(createTable);
-	    	
-	    	stmt.executeUpdate(createTable);
-	    	
-	    	c.close();
-	    	
-	    } catch (Exception e) {
-	    	System.err.println(e.getClass().getName() + ":"+e.getMessage());
-	    	System.exit(0);
-	    }
-    	
-		
-    	// String insertStudent = "INSERT INTO Students4 (firstname, lastname, coursename, age, address) "
-    	// + "VALUES ('Barry','Allen','Higher Diploma',21,'Dublin');";		
-		
-		try {		
-			c.close();
-	    } catch (Exception e) {
-	    	System.err.println(e.getClass().getName() + ":"+e.getMessage());
-	    	System.exit(0);
-	    }	
-		
-		
-		for (Object val : people_list) {
-			System.out.println(((StorageDetails) val).getRole());
-			System.out.println(((Person) val).getFirstname());
-			System.out.println(((Person) val).getLastname());
-			System.out.println(((Person) val).getEmailAddress());
-			System.out.println(((Person) val).getMobileNumber());
-		}
-		
 		
 		
 		
@@ -270,6 +168,7 @@ Salary
 Contact
 Company
 
+
   	// General Employee           Contractor      Guest
 
 	// First name                 First name      First name
@@ -315,3 +214,26 @@ Company
 //salary
 //                          contact         contact
 //                          company         company
+
+
+
+
+//while (rs.next()) {
+//	int id = rs.getInt("id");
+//	String firstname = rs.getString("firstname");
+//	String lastname = rs.getString("lastname");
+//	String coursename = rs.getString("coursename");
+//	int age = rs.getInt("age");
+//	String address = rs.getString("address");
+//	
+//	System.out.println("rwer");
+//	System.out.println("id: " + id);
+//	System.out.println("firstname: " + firstname);
+//	System.out.println("lastname: " + lastname);
+//	System.out.println("coursename: " + coursename);
+//	System.out.println("age: " + age);
+//	System.out.println("address: " + address);
+//	System.out.println();
+//	
+//	
+//}

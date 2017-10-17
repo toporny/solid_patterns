@@ -1,9 +1,6 @@
 package solid_patterns;
-
-
 import java.util.HashMap;
 import java.util.Map;
-
 import solid_patterns.Interfaces.IGuest;
 import solid_patterns.Interfaces.StorageDetails;
 
@@ -32,6 +29,7 @@ class Guest extends Person implements IGuest, StorageDetails {
 	public void setCompany(String Company) {
 		this.Company = Company;
 	}
+	
 
 	public String getCompany() {
 		return this.Company;
@@ -39,12 +37,14 @@ class Guest extends Person implements IGuest, StorageDetails {
 	
 	public String getRole() {
 		return this.role; // it is equal to: return this.getClass().getSimpleName();
+		
 		//  and it could be even move to Person /parent class/!
 		// I have decided to made additional variable (private final String role = "GeneralEmployee";) in this class/case.
 		// to make Software localization possible in future
 	}  	
 
- 
+    // this function gives every detail of person in hashmap
+	// must be inherited from Parent Class /Person/	
 	final public Map<String, String> getAllDetails(){
 		Map<String, String> m = new HashMap<String, String>();
 		m.put("role",           this.getRole());

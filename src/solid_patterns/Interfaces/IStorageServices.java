@@ -6,10 +6,8 @@ import solid_patterns.Person;
 
 public interface IStorageServices {
 
-	public void saveOne(Map<String, String> map);
-	
-	public void saveMany(ArrayList<Person> people_list);
-	
-
+	public void saveOneRecord(Map<String, String> map);
+	public void saveManyRecords(ArrayList<Person> people_list);
 	public void close();
+	
 }

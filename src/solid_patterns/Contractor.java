@@ -2,7 +2,6 @@ package solid_patterns;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import solid_patterns.Interfaces.IContractor;
 import solid_patterns.Interfaces.StorageDetails;
 
@@ -55,6 +54,9 @@ class Contractor extends Person implements IContractor, StorageDetails {
 	// to make Software localization possible in future
   }  
   
+  
+  // this function gives every detail of person in hashmap.
+  // must be inherited from Parent Class /Person/
   final public Map<String, String> getAllDetails() {
 	Map<String, String> m = new HashMap<String, String>();
 	m.put("role",           this.getRole());

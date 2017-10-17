@@ -2,7 +2,6 @@ package solid_patterns;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import solid_patterns.Interfaces.IGeneralEmployee;
 import solid_patterns.Interfaces.StorageDetails;
 
@@ -10,7 +9,7 @@ import solid_patterns.Interfaces.StorageDetails;
 class GeneralEmployee extends Person implements IGeneralEmployee, StorageDetails {
   private String DateOfBirth;
   private String JobTitle;
-  private String Salary; // I made string here to keep also currency $, €, pounds etc... 120000€
+  private String Salary; // I made String instead double here to keep also currency $, €, pounds etc... 120000€
   
   private final String role = "GeneralEmployee";
   
@@ -22,9 +21,6 @@ class GeneralEmployee extends Person implements IGeneralEmployee, StorageDetails
   }
 
   public void setDateOfBirth(String DateOfBirth) {
-    // if (DateOfBirth == null || DateOfBirth.trim().isEmpty()) {
-    //    throw new IllegalArgumentException("DateOfBirth is null or blank");
-    // }
     this.DateOfBirth = DateOfBirth;
   }
   
@@ -52,12 +48,14 @@ class GeneralEmployee extends Person implements IGeneralEmployee, StorageDetails
   
   public String getRole() {
 	return this.role; // it is equal to: return this.getClass().getSimpleName();
-	//  and it could be even move to Person /parent class/!
+	// and it could be even move to Person /parent class/
 	// I have decided to made additional variable (private final String role = "GeneralEmployee";) in this class/case.
 	// to make Software localization possible in future
   }
   
 
+  // this function gives every detail of person in hashmap
+  // must be inherited from Parent Class /Person/  
   final public Map<String, String> getAllDetails() {
 	Map<String, String> m = new HashMap<String, String>();
 	m.put("role",      		this.getRole());
@@ -67,7 +65,7 @@ class GeneralEmployee extends Person implements IGeneralEmployee, StorageDetails
 	m.put("mobile_number",  this.getMobileNumber());
 	m.put("date_of_birth",  this.getDateOfBirth());
 	m.put("job_title",      this.getJobTitle());
-	m.put("job_salary",     this.getSalary());
+	m.put("salary",         this.getSalary());
 	return m;
   }
 }
