@@ -4,16 +4,21 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import solid_patterns.Contractor;
+import solid_patterns.GeneralEmployee;
+import solid_patterns.Guest;
 import solid_patterns.Person;
 import solid_patterns.Interfaces.IStorageServices;
 
 public class StorageCsvService implements IStorageServices{
 
-	private static String csvFileName = "NewData.csv";
+	private static String csvFileName = "D16127504.csv";
 	private String[] csvStructure = {"role", "firstname", "lastname", "email_address", "mobile_number", "date_of_birth", "job_title", "salary", "contact", "company"};
 	private File file;
 	private PrintWriter pw = null;
@@ -40,7 +45,6 @@ public class StorageCsvService implements IStorageServices{
 			for (String s: csvStructure) {           
 	            sb.append(s);
 	            sb.append(';');
-			    System.out.println(s); 
 			}
             sb.append('\n');
 			pw.write(sb.toString());
@@ -86,12 +90,72 @@ public class StorageCsvService implements IStorageServices{
 	}
 		
 
+	
 	/*
 	 * Close File connection
 	 */
 	public void close() {
 		pw.close();
 	}
+	
+	
+	
+	/*
+	 * Read all data from CSV file
+	 */	
+	public ArrayList<Person> readAllData() {
+
+		ArrayList<Person> people_list = new ArrayList<Person>();
+//		String tableFields = String.join(", ", aTableColumns);
+//
+//		GeneralEmployee gen ;
+//		Contractor con ;
+//		Guest gue ;
+//
+//		try {
+//			ResultSet rs1 = stmt.executeQuery("SELECT " + tableFields + " FROM people");
+//			while (rs1.next()) {
+//				String role = rs1.getString("role");
+//				switch (role) {
+//				
+//				case "GeneralEmployee":
+//					gen  = new GeneralEmployee(rs1.getString("firstname"), rs1.getString("lastname"), rs1.getString("email_address"), rs1.getString("mobile_number"));
+//					gen.setDateOfBirth(rs1.getString("date_of_birth"));
+//					gen.setJobTitle(rs1.getString("job_title"));
+//					gen.setSalary(rs1.getString("salary"));
+//					people_list.add(gen);
+//					break;
+//
+//				case "Contractor":
+//					con  = new Contractor(rs1.getString("firstname"), rs1.getString("lastname"), rs1.getString("email_address"), rs1.getString("mobile_number"));
+//					con.setDateOfBirth(rs1.getString("date_of_birth"));
+//					con.setCompany(rs1.getString("company"));
+//					con.setContact(rs1.getString("contact"));
+//					people_list.add(con);
+//					break;
+//
+//				case "Guest":
+//					gue  = new Guest(rs1.getString("firstname"), rs1.getString("lastname"), rs1.getString("email_address"), rs1.getString("mobile_number"));
+//					gue.setCompany(rs1.getString("company"));
+//					gue.setContact(rs1.getString("contact"));
+//					people_list.add(gue);
+//					break;
+//
+//				default: // protection against unknown role from database
+//					throw new IllegalArgumentException("Unknown role: " + role);
+//
+//				}
+//			}
+//
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+
+		return people_list;
+	}
+
+	
 
  
 

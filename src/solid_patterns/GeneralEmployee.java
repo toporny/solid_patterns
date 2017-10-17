@@ -6,7 +6,7 @@ import solid_patterns.Interfaces.IGeneralEmployee;
 import solid_patterns.Interfaces.StorageDetails;
 
 
-class GeneralEmployee extends Person implements IGeneralEmployee, StorageDetails {
+public class GeneralEmployee extends Person implements IGeneralEmployee, StorageDetails {
   private String DateOfBirth;
   private String JobTitle;
   private String Salary; // I made String instead double here to keep also currency $, €, pounds etc... 120000€
@@ -19,6 +19,18 @@ class GeneralEmployee extends Person implements IGeneralEmployee, StorageDetails
     this.setJobTitle(JobTitle);
     this.setSalary(Salary);
   }
+
+  // used for building object from scratch. (during getting data from storage)
+  public GeneralEmployee() {
+  }
+  
+  
+  // used for building object from scratch. (during getting data from storage)
+  public GeneralEmployee(String Firstname, String Lastname, String EmailAddress, String MobileNumber) {
+	  super(Firstname, Lastname, EmailAddress, MobileNumber);
+  }
+
+
 
   public void setDateOfBirth(String DateOfBirth) {
     this.DateOfBirth = DateOfBirth;

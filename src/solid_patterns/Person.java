@@ -18,6 +18,11 @@ public abstract class Person {
 		  this.setMobileNumber(MobileNumber);
 	  }
 	  
+	  // overrided constructor. used for building object from scratch
+	  public Person () {
+	  }
+	  	  
+	  
 	  public void setFirstname(String Firstname) {
 	    this.Firstname = Firstname;
 	  }

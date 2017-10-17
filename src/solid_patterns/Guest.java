@@ -4,7 +4,7 @@ import java.util.Map;
 import solid_patterns.Interfaces.IGuest;
 import solid_patterns.Interfaces.StorageDetails;
 
-class Guest extends Person implements IGuest, StorageDetails {
+public class Guest extends Person implements IGuest, StorageDetails {
 
 	private String Contact;
 	private String Company;
@@ -16,6 +16,16 @@ class Guest extends Person implements IGuest, StorageDetails {
 		this.setContact(Contact);
 		this.setCompany(Company);
 	}
+	
+	// used for building object from scratch. (during getting data from storage)
+	public Guest() {
+	}
+	
+	// used for building object from scratch. (during getting data from storage)
+	public Guest(String Firstname, String Lastname, String EmailAddress, String MobileNumber) {
+	  super(Firstname, Lastname, EmailAddress, MobileNumber);
+    }
+  	
 
 	public void setContact(String Contact) {
 		this.Contact = Contact;

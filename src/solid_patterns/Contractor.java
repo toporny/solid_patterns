@@ -6,7 +6,7 @@ import solid_patterns.Interfaces.IContractor;
 import solid_patterns.Interfaces.StorageDetails;
 
 
-class Contractor extends Person implements IContractor, StorageDetails {
+public class Contractor extends Person implements IContractor, StorageDetails {
   private String DateOfBirth;
   private String Contact;
   private String Company;
@@ -20,6 +20,14 @@ class Contractor extends Person implements IContractor, StorageDetails {
 	this.Company = Company;
   }
   
+  //used for building object from scratch. (during getting data from storage)
+  public Contractor() {
+  }  
+  
+  // used for building object from scratch. (during getting data from storage)
+  public Contractor(String Firstname, String Lastname, String EmailAddress, String MobileNumber) {
+	  super(Firstname, Lastname, EmailAddress, MobileNumber);
+  }
   
   public void setDateOfBirth(String DateOfBirth) {
     this.DateOfBirth = DateOfBirth;

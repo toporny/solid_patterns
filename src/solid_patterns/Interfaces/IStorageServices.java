@@ -9,5 +9,6 @@ public interface IStorageServices {
 	public void saveOneRecord(Map<String, String> map);
 	public void saveManyRecords(ArrayList<Person> people_list);
 	public void close();
+	public ArrayList<Person> readAllData();
 	
 }
