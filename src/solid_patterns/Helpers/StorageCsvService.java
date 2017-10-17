@@ -20,6 +20,9 @@ public class StorageCsvService implements IStorageServices{
 	
 	private static Logger LOGGER = Logger.getLogger("InfoLogging");
 	
+	/* 
+	 * Storage CSV Service contructor. Checks if file exists. If not then create
+	*/	
 	public StorageCsvService() {
     	try {
     		file = new File(csvFileName);
@@ -48,6 +51,9 @@ public class StorageCsvService implements IStorageServices{
 	}
 	
 	
+	/*
+	 * Save one record to CVS file.
+	 */		
 	public void saveOneRecord(Map<String, String> m) {
         StringBuilder sb = new StringBuilder();
 		for (String s: csvStructure) {           
@@ -61,6 +67,9 @@ public class StorageCsvService implements IStorageServices{
 	}
 
 	
+	/*
+	 * Save many records to CVS file.
+	 */	
 	public void saveManyRecords(ArrayList<Person> people_list) {
 		for (Object val : people_list) {
 			Map<String, String> m = ((Person) val).getAllDetails();
@@ -73,35 +82,13 @@ public class StorageCsvService implements IStorageServices{
 			}
 	        sb.append("\n");
 			pw.write(sb.toString());
-
-			// System.out.print(m.get("role")+" ");
-			// System.out.print(m.get("firstname")+" ");
-			// System.out.print(m.get("lastname")+" ");
-			// System.out.print(m.get("email_address")+" ");
-			// System.out.print(m.get("mobile_number")+" ");
-			// System.out.print(m.get("date_of_birth")+" ");
-			// System.out.print(m.get("job_title")+" ");
-			// System.out.print(m.get("salary")+" ");
-			// System.out.print(m.get("contact")+" ");
-			// System.out.print(m.get("company"));
-			// System.out.println();
 		}
 	}
 		
-//		Map<String, String> m = ((Person) val).getAllDetails(); 
-//		System.out.print(m.get("role")+" ");
-//		System.out.print(m.get("firstname")+" ");
-//		System.out.print(m.get("lastname")+" ");
-//		System.out.print(m.get("email_address")+" ");
-//		System.out.print(m.get("mobile_number")+" ");
-//		System.out.print(m.get("date_of_birth")+" ");
-//		System.out.print(m.get("job_title")+" ");
-//		System.out.print(m.get("salary")+" ");
-//		System.out.print(m.get("contact")+" ");
-//		System.out.print(m.get("company"));
-//		System.out.println();
-	//}
 
+	/*
+	 * Close File connection
+	 */
 	public void close() {
 		pw.close();
 	}

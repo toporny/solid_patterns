@@ -11,10 +11,7 @@ public class Helper {
 		copy.remove(0);
 		return copy;
 		// I had to make copy of array list because ".remove(0)" deals on reference
-		// I don't know how to remove first element.
-		
-		// Ayway.. this helper is 
-		// temporary function only to show my saveOneRecord() and saveManyRecord()  
+		// Ayway.. this helper is only temporary function to show my saveOneRecord() and saveManyRecord()  
 		
 	}
 

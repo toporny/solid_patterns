@@ -21,9 +21,7 @@ public class StorageDbService implements IStorageServices{
 	Statement stmt = null;
 
 	/* 
-	 * Storage DB Service contructor
-	 * checks if table exists
-	 * if not then create table
+	 * Storage DB Service contructor. Checks if table exists. If not then create table
 	*/
 	public StorageDbService() {
 
@@ -43,12 +41,11 @@ public class StorageDbService implements IStorageServices{
 		try {
 			stmt = c.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT count(*) as total FROM sqlite_master WHERE type='table' AND name='people'");
-			System.err.println(rs.getInt("total"));
 
 			// if there is no /PEOPLE/ table in databaase then create it.
 			if (rs.getInt("total") == 0) {
 
-				LOGGER.info("Seems table /people/ does not already exist. I need to create then.");
+				LOGGER.info("Seems table /people/ not exists. I need to create it...");
 
 				stmt = c.createStatement();
 				String createTable = "CREATE TABLE people "+
@@ -89,19 +86,17 @@ public class StorageDbService implements IStorageServices{
 	private String[] PrepareValuesArray(Map<String, String> m){
 		String[] aTableValues = new String[aTableColumns.length];
 		for (int i=0; i<aTableColumns.length; i++) {
-			if (m.get(aTableColumns[i]) != null) {
+			if (m.get(aTableColumns[i]) != null) 
 				aTableValues[i] = "'" + m.get(aTableColumns[i]) + "'";
-			}
-			else {
+			else 
 				aTableValues[i] = "''"; // set empty string if field does not exist.
-			}
 		}		
 		return aTableValues;
 	}		
 
 
 	/*
-	 * save one record into database
+	 * Save one record into DB
 	 */
 	public void saveOneRecord(Map<String, String> m) {
 
@@ -125,9 +120,11 @@ public class StorageDbService implements IStorageServices{
 
 	
 	/*
-	 * Save many record into database.
+	 * Save many records into database.
 	 * this is inefficient way because it calls saveOneRecord() many times
-	 * instead build one big insert query and make one dbExecute. 
+	 * instead build one big insert query and make only one dbExecute. 
+	 * however maximum number of bytes in the text of an SQL statement is limited to SQLITE_MAX_SQL_LENGTH
+	 * which defaults to 1000000 bytes. (depends of OS)
 	 */
 	public void saveManyRecords(ArrayList<Person> people_list) {
 		for (Object val : people_list) {

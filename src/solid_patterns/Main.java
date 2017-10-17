@@ -17,9 +17,8 @@ public class Main {
 		ArrayList<Person> people_list = new ArrayList<Person>();
 		
 		// Few example records. This is Hardcoded data.
-		// Each (object) has common methods (inherited from person abstract ckass)
+		// Each (object) has common methods (inherited from person abstract class)
 		// and different specific methods only for specific role"
-		
 		GeneralEmployee gen1 = new GeneralEmployee ("George", "Bush", "george_bush@usa.gov", "+123456789", "1946-07-04", "president", "2300.12");
 		Contractor      con1 = new Contractor      ("Urlich", "von Braun", "urlich_von_braun@v8.de", "+34235433", "1911-03-21", "Beverly Hils 90210",  "NASA");
 		Guest           gue1 = new Guest           ("Mieszko", "Pierwszy", "mieszko1@gov.pl", "+48 505 323 111", "ul. Polan 1",  "Sclavinia");
@@ -42,20 +41,32 @@ public class Main {
 		people_list.add(con2);
 		people_list.add(gue2);
 
-		// example how to save save WHOLE list to the storage by one call
+		// example how to save WHOLE list to the storage by one call
 		csvServ.saveManyRecords(Helper.skipFirstOne(people_list)); // skipped because first row was added before. 
 		csvServ.close();
 
 		
 		// "At some point this will be changed upgraded to use a SQLite database."
+		// Time to change "csvServ" to "dbServ"
 		IStorageServices dbServ = new StorageDbService();
 		dbServ.saveOneRecord(((Person) people_list.get(0)).getAllDetails()); // this is example how to save only ONE record to db
-		dbServ.saveManyRecords(Helper.skipFirstOne(people_list)); // example how to save WHOLE list by one call
+		dbServ.saveManyRecords(Helper.skipFirstOne(people_list)); // example how to save WHOLE list by one saveManyRecords() call
 		dbServ.close();
 		// What I did above I changed "csvServ" to "dbServ"
 		// and everything else is the same like with CSV was (D.I.P. Dependency Inversion Principle)
 
-		System.exit(0);		
+		
+		
+		// When the event is over the system should send each guest a text message and an email thanking them for
+		// attending the event 
+		// 1. send thankfull SMS message
+		// 2. send thankfull mail message		
+		for (Object val : people_list) {
+			System.out.println(((StorageDetails) val).getRole());
+			System.out.println(((Person) val).getFirstname());
+		}
+		
+		
 
 		
 		
@@ -135,11 +146,7 @@ public class Main {
 //	    	System.exit(0);
 //	    }
 		
-		
-		for (Object val : people_list) {
-			System.out.println(((StorageDetails) val).getRole());
-			System.out.println(((Person) val).getFirstname());
-		}
+
 		
 		// close CSV file
 		// to do...
