@@ -1,4 +1,4 @@
-package d16127504.Helpers;
+package d16127504.EventServices;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -51,7 +51,7 @@ public class StorageCsvService implements IStorageServices {
 			sb.append('\n');
 			pw.write(sb.toString());
 		} else {
-			LOGGER.info("Seems file " + csvFileName + " exists. No need to add Header to the top of the file...");
+			LOGGER.info("Seems file " + csvFileName + " exists.");
 		}
 	}
 

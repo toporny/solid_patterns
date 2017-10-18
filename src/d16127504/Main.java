@@ -2,9 +2,9 @@ package d16127504;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import d16127504.Helpers.Helper;
-import d16127504.Helpers.StorageCsvService;
-import d16127504.Helpers.StorageDbService;
+import d16127504.EventServices.Helper;
+import d16127504.EventServices.StorageCsvService;
+import d16127504.EventServices.StorageDbService;
 import d16127504.Interfaces.IStorageServices;
 public class Main {
 
@@ -41,7 +41,7 @@ public class Main {
 		people_list.add(con2);
 		people_list.add(gue2);
 		
-		// example how to save WHOLE list to the storage by one call
+		// save WHOLE list to the storage by one call
 		csvServ.saveManyRecords(Helper.skipFirstOne(people_list)); // skipped because first row was added before. 
 		
 		
@@ -77,7 +77,7 @@ public class Main {
 		/*
 		 * The same operation as above but this time take data from CSV file.
 		 * Is not neccesairly in relase final project but I wanted to show how my CSV parser works.
-		 * What it part of code does it parses CSV file and put data to ArrayList (people_list)
+		 * What this part of code does it parses CSV file and put data into (people_list) ArrayList 
 		 * and send SMS and email after that.
 		 */
 		LOGGER.info("Second part of project, part B. Get data from CSV and send notifications");
