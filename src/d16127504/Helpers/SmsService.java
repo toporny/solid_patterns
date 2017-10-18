@@ -1,6 +1,6 @@
-package solid_patterns.Helpers;
+package d16127504.Helpers;
 
-import solid_patterns.Interfaces.IMsgProvider;
+import d16127504.Interfaces.IMsgProvider;
 
 public class SmsService implements IMsgProvider {
 

@@ -1,4 +1,4 @@
-package solid_patterns.Helpers;
+package d16127504.Helpers;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import solid_d16127504.Contractor;
-import solid_d16127504.GeneralEmployee;
-import solid_d16127504.Guest;
-import solid_d16127504.Person;
-import solid_patterns.Interfaces.IStorageServices;
+import d16127504.Contractor;
+import d16127504.GeneralEmployee;
+import d16127504.Guest;
+import d16127504.Person;
+import d16127504.Interfaces.IStorageServices;
 
 public class StorageDbService implements IStorageServices{
 

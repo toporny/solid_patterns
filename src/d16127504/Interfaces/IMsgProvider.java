@@ -1,4 +1,4 @@
-package solid_patterns.Interfaces;
+package d16127504.Interfaces;
 
 public interface IMsgProvider {
 

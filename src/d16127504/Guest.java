@@ -1,8 +1,9 @@
-package solid_d16127504;
+package d16127504;
 import java.util.HashMap;
 import java.util.Map;
-import solid_patterns.Interfaces.IGuest;
-import solid_patterns.Interfaces.StorageDetails;
+
+import d16127504.Interfaces.IGuest;
+import d16127504.Interfaces.StorageDetails;
 
 public class Guest extends Person implements IGuest, StorageDetails {
 

@@ -1,9 +1,10 @@
-package solid_d16127504;
+package d16127504;
 
 import java.util.HashMap;
 import java.util.Map;
-import solid_patterns.Interfaces.IContractor;
-import solid_patterns.Interfaces.StorageDetails;
+
+import d16127504.Interfaces.IContractor;
+import d16127504.Interfaces.StorageDetails;
 
 
 public class Contractor extends Person implements IContractor, StorageDetails {

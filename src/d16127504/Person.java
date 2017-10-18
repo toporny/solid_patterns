@@ -1,4 +1,4 @@
-package solid_d16127504;
+package d16127504;
 
 import java.util.Map;
 

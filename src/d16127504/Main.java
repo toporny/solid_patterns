@@ -1,19 +1,19 @@
-package solid_d16127504;
+package d16127504;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
-import solid_patterns.Helpers.StorageCsvService;
-import solid_patterns.Helpers.StorageDbService;
-import solid_patterns.Helpers.Helper;
-import solid_patterns.Helpers.SmsService;
-import solid_patterns.Helpers.MailService;
-import solid_patterns.Interfaces.IMsgProvider;
-import solid_patterns.Interfaces.IStorageServices;
+import d16127504.Helpers.Helper;
+import d16127504.Helpers.StorageCsvService;
+import d16127504.Helpers.StorageDbService;
+import d16127504.Interfaces.IStorageServices;
 public class Main {
 
 	
 	
 	public static void main(String[] args) {
-		System.out.println("===== Start of program =====");
+		Logger LOGGER = Logger.getLogger("InfoLogging");
+		LOGGER.info("Start of program....");		
+
 
 		// "It is suggested that you use an ArrayList to store the event attenders."
 		ArrayList<Person> people_list = new ArrayList<Person>();
@@ -52,32 +52,42 @@ public class Main {
 		dbServ.saveManyRecords(Helper.skipFirstOne(people_list)); // example how to save WHOLE list by one call
 
 		
+		// The application must be able to display a list of the people attending the event
+		// by listing firstname, lastname and mobile number
+		System.out.println("List of visitors: ");
+		Helper.displayVisitors(people_list);
+
+		
 		/*
 		 * THIS IS SECOND PART OF THIS PROJECT 
 		 * "When the event is over the system should send each guest a text message and an email thanking them for"
 		 * "attending the event  1.send thankfull SMS message, 2. send thankfull mail message"
 		 */
-
+		LOGGER.info("Second part of project. Get data from storage and send notifications");		
 		
 		people_list.clear(); // clear all old data to be sure all new data comes from storage.
 		people_list = dbServ.readAllData(); // read data from DB
-		Helper.sendSmsToEverybody("+353 86 105 5566", people_list, "this is SMS to people from DB. Thank you for visiting!"); // +353 86 105 5566 = company phone 
-		Helper.sendEmailToEverybody("event@company.com", people_list,  "this is EMAIL to people from DB. Thank you for visiting!"); // event@company.com = company email
+		Helper.sendSmsToEverybody("+353 86 105 5566", people_list, "this is SMS to people from --DB--. Thank you for visiting!"); // +353 86 105 5566 = company phone 
+		Helper.sendEmailToEverybody("event@company.com", people_list,  "this is EMAIL to people from --DB--. Thank you for visiting!"); // event@company.com = company email
 
+		csvServ.close();
+		dbServ.close();
+		
+		
 		/*
-		 * the same operation as above but this time records come from CSV file
+		 * The same operation as above but this time take data from CSV file.
+		 * Is not neccesairly in relase final project but I wanted to show how my CSV parser works.
+		 * What it part of code does it parses CSV file and put data to ArrayList (people_list)
+		 * and send SMS and email after that.
 		 */
 		people_list.clear(); // clear all old data to be sure all new data comes from storage.
-		people_list = csvServ.readAllData(); // read data frl DB
-		Helper.sendSmsToEverybody("+353 86 105 5566", people_list, "this is SMS to people from CSV file. Thank you for visiting!"); // +353 86 105 5566 = company phone 
-		Helper.sendEmailToEverybody("event@company.com", people_list,  "this is EMAIL to people from CSV file. Thank you for visiting!"); // event@company.com = company email
-	
+		IStorageServices csvTesing = new StorageCsvService(); // make another file handler
+		people_list = csvTesing.readAllData(); // read data from CSV
+		Helper.sendSmsToEverybody("+353 86 105 5566", people_list, "this is SMS to people from --CSV file--. Thank you for visiting!"); // +353 86 105 5566 = company phone 
+		Helper.sendEmailToEverybody("event@company.com", people_list,  "this is EMAIL to people from --CSV-- file. Thank you for visiting!"); // event@company.com = company email
+		csvTesing.close();		
 		
-		csvServ.close();
-		dbServ.close();		
-		
-		
-		System.out.println("===== End of program =====");
+		LOGGER.info("End of program. Be aware that next run appends data to storage (DB and CSV).\n For testing purposes you may delete d16127504.sqlite and csv files");
 	}
 
 }

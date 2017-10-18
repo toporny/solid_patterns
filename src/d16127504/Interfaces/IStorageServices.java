@@ -1,8 +1,8 @@
-package solid_patterns.Interfaces;
+package d16127504.Interfaces;
 import java.util.ArrayList;
 import java.util.Map;
 
-import solid_d16127504.Person;
+import d16127504.Person;
 
 public interface IStorageServices {
 

@@ -1,9 +1,10 @@
-package solid_d16127504;
+package d16127504;
 
 import java.util.HashMap;
 import java.util.Map;
-import solid_patterns.Interfaces.IGeneralEmployee;
-import solid_patterns.Interfaces.StorageDetails;
+
+import d16127504.Interfaces.IGeneralEmployee;
+import d16127504.Interfaces.StorageDetails;
 
 
 public class GeneralEmployee extends Person implements IGeneralEmployee, StorageDetails {
