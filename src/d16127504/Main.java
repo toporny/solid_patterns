@@ -63,7 +63,7 @@ public class Main {
 		 * "When the event is over the system should send each guest a text message and an email thanking them for"
 		 * "attending the event  1.send thankfull SMS message, 2. send thankfull mail message"
 		 */
-		LOGGER.info("Second part of project. Get data from storage and send notifications");		
+		LOGGER.info("Second part of project, part A. Get data from DB and send notifications");		
 		
 		people_list.clear(); // clear all old data to be sure all new data comes from storage.
 		people_list = dbServ.readAllData(); // read data from DB
@@ -80,6 +80,7 @@ public class Main {
 		 * What it part of code does it parses CSV file and put data to ArrayList (people_list)
 		 * and send SMS and email after that.
 		 */
+		LOGGER.info("Second part of project, part B. Get data from CSV and send notifications");
 		people_list.clear(); // clear all old data to be sure all new data comes from storage.
 		IStorageServices csvTesing = new StorageCsvService(); // make another file handler
 		people_list = csvTesing.readAllData(); // read data from CSV
