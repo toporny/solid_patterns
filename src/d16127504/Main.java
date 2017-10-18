@@ -88,7 +88,7 @@ public class Main {
 		Helper.sendEmailToEverybody("event@company.com", people_list,  "this is EMAIL to people from --CSV-- file. Thank you for visiting!"); // event@company.com = company email
 		csvTesing.close();		
 		
-		LOGGER.info("End of program. Be aware that next run appends data to storage (DB and CSV).\n For testing purposes you may delete d16127504.sqlite and csv files");
+		LOGGER.info("End of program. Be aware that next run appends data to storage (DB and CSV).\nFor testing purposes you may delete d16127504.sqlite and csv files");
 	}
 
 }
