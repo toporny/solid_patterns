@@ -3,9 +3,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import d16127504.Interfaces.IGuest;
-import d16127504.Interfaces.StorageDetails;
+import d16127504.Interfaces.IStorageDetails;
 
-public class Guest extends Person implements IGuest, StorageDetails {
+public class Guest extends Person implements IGuest, IStorageDetails {
 
 	private String Contact;
 	private String Company;
@@ -18,7 +18,7 @@ public class Guest extends Person implements IGuest, StorageDetails {
 		this.setCompany(Company);
 	}
 	
-	// used for building object from scratch. (during getting data from storage)
+    // used for building object from scratch. (not used)
 	public Guest() {
 	}
 	

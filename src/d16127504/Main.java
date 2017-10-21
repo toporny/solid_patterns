@@ -3,8 +3,11 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import d16127504.EventServices.Helper;
+import d16127504.EventServices.MailService;
+import d16127504.EventServices.SmsService;
 import d16127504.EventServices.StorageCsvService;
 import d16127504.EventServices.StorageDbService;
+import d16127504.Interfaces.IMsgProvider;
 import d16127504.Interfaces.IStorageServices;
 public class Main {
 
@@ -14,13 +17,13 @@ public class Main {
 		Logger LOGGER = Logger.getLogger("InfoLogging");
 		LOGGER.info("Start of program....");		
 
-
+		
 		// "It is suggested that you use an ArrayList to store the event attenders."
 		ArrayList<Person> people_list = new ArrayList<Person>();
 		
 		// Few example records. This is Hardcoded data. Each (object) has common methods (inherited from person abstract class)
 		// and different specific methods only for specific role"
-		GeneralEmployee gen1 = new GeneralEmployee ("George", "Bush", "george_bush@usa.gov", "+123456789", "1946-07-04", "president", "2300.12");
+		GeneralEmployee gen1 = new GeneralEmployee ("Vladimir", "Putin", "george_bush@usa.gov", "+123456789", "1946-07-04", "president", "2300.12");
 		Contractor      con1 = new Contractor      ("Urlich", "von Braun", "urlich_von_braun@v8.de", "+34235433", "1911-03-21", "Beverly Hils 90210",  "NASA");
 		Guest           gue1 = new Guest           ("Mieszko", "Pierwszy", "mieszko1@gov.pl", "+48 505 323 111", "ul. Polan 1",  "Sclavinia");
 		GeneralEmployee gen2 = new GeneralEmployee ("Barbara", "Bush", "barbara_bush@usa.gov", "+234567890", "1948-07-04", "first lady", "1300.00");
@@ -30,7 +33,7 @@ public class Main {
 		// When a person is added to the system then details will be added/appended to a text file (csv).
 		IStorageServices csvServ = new StorageCsvService();
 		people_list.add(gen1);
-				
+
 		// save ONE record to storage
 		csvServ.saveOneRecord(((Person) people_list.get(0)).getAllDetails()); 
 
@@ -41,8 +44,8 @@ public class Main {
 		people_list.add(con2);
 		people_list.add(gue2);
 		
-		// save WHOLE list to the storage by one call
-		csvServ.saveManyRecords(Helper.skipFirstOne(people_list)); // skipped because first row was added before. 
+		// save WHOLE list to the storage by one call to saveManyRecords()
+		csvServ.saveManyRecords(Helper.skipFirstOne(people_list)); // skipped because first el. row was added before. 
 		
 		
 		// "At some point this will be changed upgraded to use a SQLite database."
@@ -54,7 +57,6 @@ public class Main {
 		
 		// The application must be able to display a list of the people attending the event
 		// by listing firstname, lastname and mobile number
-		System.out.println("List of visitors: ");
 		Helper.displayVisitors(people_list);
 
 		
@@ -63,12 +65,19 @@ public class Main {
 		 * "When the event is over the system should send each guest a text message and an email thanking them for"
 		 * "attending the event  1.send thankfull SMS message, 2. send thankfull mail message"
 		 */
-		LOGGER.info("Second part of project, part A. Get data from DB and send notifications");		
+		LOGGER.info("Second part of project, part A. Get data from DB and send notifications");
 		
 		people_list.clear(); // clear all old data to be sure all new data comes from storage.
 		people_list = dbServ.readAllData(); // read data from DB
-		Helper.sendSmsToEverybody("+353 86 105 5566", people_list, "this is SMS to people from --DB--. Thank you for visiting!"); // +353 86 105 5566 = company phone 
-		Helper.sendEmailToEverybody("event@company.com", people_list,  "this is EMAIL to people from --DB--. Thank you for visiting!"); // event@company.com = company email
+
+		// sendSmsToEverybody
+		IMsgProvider senderService = new SmsService();
+		for (Object val : people_list)  // send SMS to Everybody from DB
+			senderService.SendMsg("+353 86 105 5566", ((Person) val).getMobileNumber(), "this is SMS to people from --DB--. Thank you for visiting!");
+
+		senderService = new MailService();
+		for (Object val : people_list) // send email to Everybody from DB
+			senderService.SendMsg("event@company.com", ((Person) val).getMobileNumber(), "this is EMAIL to people from --DB--. Thank you for visiting!"); // event@company.com = company email
 
 		csvServ.close();
 		dbServ.close();
@@ -84,11 +93,17 @@ public class Main {
 		people_list.clear(); // clear all old data to be sure all new data comes from storage.
 		IStorageServices csvTesing = new StorageCsvService(); // make another file handler
 		people_list = csvTesing.readAllData(); // read data from CSV
-		Helper.sendSmsToEverybody("+353 86 105 5566", people_list, "this is SMS to people from --CSV file--. Thank you for visiting!"); // +353 86 105 5566 = company phone 
-		Helper.sendEmailToEverybody("event@company.com", people_list,  "this is EMAIL to people from --CSV-- file. Thank you for visiting!"); // event@company.com = company email
+
+		senderService = new SmsService();
+		for (Object val : people_list)  // send SMS to Everybody from CSV
+			senderService.SendMsg("+353 86 105 5566", ((Person) val).getMobileNumber(), "this is SMS to people from --CSV--. Thank you for visiting!");
+
+		senderService = new MailService();
+		for (Object val : people_list)  // send mail to Everybody from CSV
+			senderService.SendMsg("event@company.com", ((Person) val).getMobileNumber(),  "this is EMAIL to people from --CSV-- file. Thank you for visiting!"); // event@company.com = company email
+
 		csvTesing.close();		
-		
-		LOGGER.info("End of program. Be aware that next run appends data to storage (DB and CSV).\nFor testing purposes you may delete d16127504.sqlite and csv files");
+		LOGGER.info("End of program. Be aware that next run appends data to storage (DB and CSV).\nFor testing purposes you may delete d16127504.sqlite and d16127504.csv files");
 	}
 
 }

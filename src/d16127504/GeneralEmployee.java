@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import d16127504.Interfaces.IGeneralEmployee;
-import d16127504.Interfaces.StorageDetails;
+import d16127504.Interfaces.IStorageDetails;
 
 
-public class GeneralEmployee extends Person implements IGeneralEmployee, StorageDetails {
+public class GeneralEmployee extends Person implements IGeneralEmployee, IStorageDetails {
   private String DateOfBirth;
   private String JobTitle;
   private String Salary; // I made String instead double here to keep also currency $, €, pounds etc... 120000€
@@ -21,7 +21,7 @@ public class GeneralEmployee extends Person implements IGeneralEmployee, Storage
     this.setSalary(Salary);
   }
 
-  // used for building object from scratch. (during getting data from storage)
+  // used for building object from scratch. (not used)
   public GeneralEmployee() {
   }
   

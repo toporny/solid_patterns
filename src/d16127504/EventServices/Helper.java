@@ -17,25 +17,11 @@ public class Helper {
 		return copy;
 	}
 
-	
-	public static void sendSmsToEverybody(String fromDetails, ArrayList<Person> people_list, String msgContent) {
-		IMsgProvider senderService = new SmsService();
-		for (Object val : people_list) {
-			senderService.SendMsg(fromDetails, ((Person) val).getMobileNumber(), msgContent);
-		}
-	}
-
-	public static void sendEmailToEverybody(String fromDetails, ArrayList<Person> people_list, String msgContent) {
-		IMsgProvider senderService = new MailService();
-		for (Object val : people_list) {
-			senderService.SendMsg(fromDetails, ((Person) val).getEmailAddress(), msgContent);
-		}
-	}
-
 
 	// The application must be able to display a list of the people attending the event
 	// by listing firstname, lastname and mobile number
 	public static void displayVisitors(ArrayList<Person> people_list) {
+		System.out.println("List of visitors: ");
 		for (Object val : people_list) {
 			System.out.println(((Person) val).getFirstname()+' '+((Person) val).getLastname() + ", phone: "+((Person) val).getMobileNumber());
 		}		

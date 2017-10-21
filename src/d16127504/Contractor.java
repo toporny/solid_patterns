@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import d16127504.Interfaces.IContractor;
-import d16127504.Interfaces.StorageDetails;
+import d16127504.Interfaces.IStorageDetails;
 
 
-public class Contractor extends Person implements IContractor, StorageDetails {
+public class Contractor extends Person implements IContractor, IStorageDetails {
   private String DateOfBirth;
   private String Contact;
   private String Company;
@@ -21,7 +21,7 @@ public class Contractor extends Person implements IContractor, StorageDetails {
 	this.Company = Company;
   }
   
-  //used for building object from scratch. (during getting data from storage)
+  // used for building object from scratch. (not used)
   public Contractor() {
   }  
   
